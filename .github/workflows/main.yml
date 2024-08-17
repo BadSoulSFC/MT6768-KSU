@@ -36,7 +36,7 @@ jobs:
 
         make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- lancelot_defconfig
         make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-
+        make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- bootimg
     - name: Creating update.zip (AnyKernel3)
       run: |
         cd $GITHUB_WORKSPACE/action_dir
