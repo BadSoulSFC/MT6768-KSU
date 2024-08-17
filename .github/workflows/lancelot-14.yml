@@ -30,7 +30,7 @@ jobs:
     - name: Patching kernel tree for KernelSU support
       run: |
         cd $GITHUB_WORKSPACE/action_dir/kernel_tree
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash - 0.9.5
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
         wget -P $GITHUB_WORKSPACE/ https://raw.githubusercontent.com/xiaoleGun/KernelSU_Action/main/patches/patches.sh
         bash $GITHUB_WORKSPACE/patches.sh
         echo "CONFIG_KSU=y" >> arch/arm64/configs/lancelot_defconfig
@@ -51,7 +51,7 @@ jobs:
         cd $GITHUB_WORKSPACE/action_dir
         git clone https://github.com/osm0sis/AnyKernel3 --depth=1 AnyKernel3
         sed -i 's/do.devicecheck=1/do.devicecheck=0/g' AnyKernel3/anykernel.sh
-        sed -i 's!block=/dev/block/platform/bootdevice/by-name/boot;!block=auto;!g' AnyKernel3/anykernel.sh
+        sed -i 's|BLOCK=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;|BLOCK=auto;|g' AnyKernel3/anykernel.sh
         sed -i 's/is_slot_device=0;/is_slot_device=auto;/g' AnyKernel3/anykernel.sh
         cp kernel_tree/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
         rm -rf AnyKernel3/.git* AnyKernel3/README.md
