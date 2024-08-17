@@ -61,3 +61,9 @@ jobs:
       with:
         name: KernelSU-${{ env.BUILD_TIME }}-lancelot-14
         path: action_dir/AnyKernel3/*
+
+    - name: Uploading Image
+      uses: actions/upload-artifact@v4
+      with:
+        name: image-gz.dtb
+        path: $GITHUB_WORKSPACE/action_dir/kernel_tree/out/arch/arm64/boot/*
