@@ -23,7 +23,6 @@ jobs:
         mkdir clang && cd clang
         bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S=latest
         bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) --patch=glibc
-        export PATH=$GITHUB_WORKSPACE/action_dir/clang/bin:$PATH
     - name: Cloning kernel tree
       run: |
         cd $GITHUB_WORKSPACE/action_dir
@@ -43,12 +42,12 @@ jobs:
     - name: Building kernel
       run: |
         cd $GITHUB_WORKSPACE/action_dir/kernel_tree
-        export PATH=$GITHUB_WORKSPACE/action_dir/proton-clang/bin:$PATH
+        export PATH=$GITHUB_WORKSPACE/action_dir/clang/bin:$PATH
         export KBUILD_BUILD_HOST=github
         export KBUILD_BUILD_USER=BadSoul_SFC
         
-        make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- lancelot_defconfig
-        make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi-
+        make -j$(nproc --all) O=out ARCH=arm64 CC="clang" CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- LLVM=1 LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CONFIG_NO_ERROR_ON_MISMATCH=y lancelot_defconfig
+        make -j$(nproc --all) O=out ARCH=arm64 CC="clang" CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- LLVM=1 LD=ld.lld AS=llvm-as AR=llvm-ar NM=llvm-nm OBJCOPY=llvm-objcopy OBJDUMP=llvm-objdump STRIP=llvm-strip CONFIG_NO_ERROR_ON_MISMATCH=y
         
     - name: Creating update.zip (AnyKernel3)
       run: |
