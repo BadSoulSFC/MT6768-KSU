@@ -23,7 +23,7 @@ jobs:
         mkdir clang && cd clang
         bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S=latest
         bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) --patch=glibc
-
+        export PATH=$GITHUB_WORKSPACE/action_dir/clang/bin:$PATH
     - name: Cloning kernel tree
       run: |
         cd $GITHUB_WORKSPACE/action_dir
