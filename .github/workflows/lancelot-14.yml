@@ -1,4 +1,4 @@
-name: (LINEAGE 21) Redmi 9 (lancelot)
+name: Lancelot KSU/APatch Supported 4.14.336 Kernel
 on:
   schedule:
   - cron: "0 0 * * 6"
@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: Build kernel with KernelSU support for Redmi 9 (lancelot)
+    name: Build kernel with KernelSU support.
     runs-on: ubuntu-latest
     steps:
     - name: Preparing build environment
@@ -25,7 +25,7 @@ jobs:
     - name: Cloning kernel tree
       run: |
         cd $GITHUB_WORKSPACE/action_dir
-        git clone https://github.com/mt6768-dev/android_kernel_xiaomi_mt6768 -b lineage-21 kernel_tree --depth=1
+        git clone https://github.com/hipexscape/kernel_xiaomi_mt6768 -b 14 kernel_tree --depth=1
 
     - name: Patching kernel tree for KernelSU support
       run: |
@@ -35,7 +35,9 @@ jobs:
         bash $GITHUB_WORKSPACE/patches.sh
         echo "CONFIG_KSU=y" >> arch/arm64/configs/lancelot_defconfig
         echo "CONFIG_OVERLAY_FS=y" >> arch/arm64/configs/lancelot_defconfig
-
+        echo "CONFIG_KALLSYMS=y" >> arch/arm64/configs/lancelot_defconfig
+        echo "CONFIG_KALLSYMS_ALL=y" >> arch/arm64/configs/lancelot_defconfig
+ 
     - name: Building kernel
       run: |
         cd $GITHUB_WORKSPACE/action_dir/kernel_tree
@@ -45,25 +47,18 @@ jobs:
         
         make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- lancelot_defconfig
         make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi-
-        make -j$(nproc --all) CC=clang O=out ARCH=arm64 LD=ld.lld CROSS_COMPILE=aarch64-linux-gnu- CROSS_COMPILE_ARM32=arm-linux-gnueabi- bootimg
+        
     - name: Creating update.zip (AnyKernel3)
       run: |
         cd $GITHUB_WORKSPACE/action_dir
-        git clone https://github.com/osm0sis/AnyKernel3 --depth=1 AnyKernel3
-        sed -i 's/do.devicecheck=1/do.devicecheck=0/g' AnyKernel3/anykernel.sh
-        sed -i 's|BLOCK=/dev/block/platform/omap/omap_hsmmc.0/by-name/boot;|BLOCK=auto;|g' AnyKernel3/anykernel.sh
-        sed -i 's/is_slot_device=0;/is_slot_device=auto;/g' AnyKernel3/anykernel.sh
-        cp kernel_tree/out/arch/arm64/boot/Image.gz-dtb AnyKernel3/
-        rm -rf AnyKernel3/.git* AnyKernel3/README.md
+        git clone --depth=1 -b master https://github.com/orkunsdumps/AnyKernel3.git --depth=1 AnyKernel
+        cp kernel_tree/out/arch/arm64/boot/Image.gz-dtb AnyKernel/
+        cd AnyKernel/
+        rm -rf .git README.md *placeholder
 
     - name: Uploading update.zip
       uses: actions/upload-artifact@v4
       with:
         name: KernelSU-${{ env.BUILD_TIME }}-lancelot-14
-        path: action_dir/AnyKernel3/*
+        path: action_dir/AnyKernel/*
 
-    - name: Uploading Image
-      uses: actions/upload-artifact@v4
-      with:
-        name: image-gz.dtb
-        path: $GITHUB_WORKSPACE/action_dir/kernel_tree/out/arch/arm64/boot/*
