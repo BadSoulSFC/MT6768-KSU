@@ -1,4 +1,7 @@
 MT6768 kernel with KernelSU & APatch support
-Promise to work only on Redmi 9 lancelot.
-Android 14 Only.
-Android 13 Disabled.
+
+Integrated KSU for non-GKI kernels
+Supported KSU version is up to 1.0.1
+APatch is supported 
+
+Promise to work only on Xiaomi Redmi 9 (lancelot). Android 13-14-15
