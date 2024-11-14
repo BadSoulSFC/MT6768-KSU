@@ -1,4 +1,4 @@
-name: (LINEAGE 20) Redmi 9 (lancelot)
+name: Lancelot KSU/APatch Supported A13 Kernel from CRDroid 
 on:
   schedule:
   - cron: "0 0 * * 6"
