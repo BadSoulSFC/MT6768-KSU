@@ -17,16 +17,14 @@ jobs:
         sudo apt install git libarchive-tools ccache automake flex lzop bison gperf build-essential zip curl zlib1g-dev g++-multilib libxml2-utils bzip2 libbz2-dev libbz2-1.0 libghc-bzlib-dev squashfs-tools pngcrush schedtool dpkg-dev liblz4-tool make optipng maven libssl-dev pwgen libswitch-perl policycoreutils minicom libxml-sax-base-perl libxml-simple-perl bc libc6-dev-i386 lib32ncurses5-dev libx11-dev lib32z-dev libgl1-mesa-dev xsltproc unzip device-tree-compiler python2 python3
         mkdir -p $GITHUB_WORKSPACE/action_dir
 
-    - name: Cloning Clang Toolchain
+    - name: Cloning Proton Clang
       run: |
         cd $GITHUB_WORKSPACE/action_dir
-        mkdir clang && cd clang
-        bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) -S=latest
-        bash <(curl -s https://raw.githubusercontent.com/Neutron-Toolchains/antman/main/antman) --patch=glibc
+        git clone https://github.com/kdrag0n/proton-clang --depth=1
     - name: Cloning kernel tree
       run: |
         cd $GITHUB_WORKSPACE/action_dir
-        git clone https://github.com/hipexscape/kernel_xiaomi_mt6768 -b 14 kernel_tree --depth=1
+        git clone https://github.com/crdroidandroid/android_kernel_xiaomi_mt6768 -b 14.0 kernel_tree --depth=1
 
     - name: Patching kernel tree for KernelSU support
       run: |
