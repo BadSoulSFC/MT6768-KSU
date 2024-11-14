@@ -40,7 +40,7 @@ jobs:
     - name: Building kernel
       run: |
         cd $GITHUB_WORKSPACE/action_dir/kernel_tree
-        export PATH=$GITHUB_WORKSPACE/action_dir/clang/bin:$PATH
+        export PATH=$GITHUB_WORKSPACE/action_dir/proton-clang/bin:$PATH
         export KBUILD_BUILD_HOST=github
         export KBUILD_BUILD_USER=BadSoul_SFC
         
