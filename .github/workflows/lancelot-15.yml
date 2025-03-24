@@ -30,7 +30,7 @@ jobs:
     - name: Patching kernel tree for KernelSU support
       run: |
         cd $GITHUB_WORKSPACE/action_dir/kernel_tree
-        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v1.0.1
+        curl -LSs "https://raw.githubusercontent.com/tiann/KernelSU/main/kernel/setup.sh" | bash -s v0.9.5
         wget -P $GITHUB_WORKSPACE/ https://raw.githubusercontent.com/xiaoleGun/KernelSU_Action/main/patches/patches.sh
         bash $GITHUB_WORKSPACE/patches.sh
         echo "CONFIG_KALLSYMS=y" >> arch/arm64/configs/lancelot_defconfig
