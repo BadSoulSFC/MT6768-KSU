@@ -8,7 +8,7 @@ on:
 jobs:
   build:
     name: Build kernel with KernelSU support.
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
     - name: Preparing build environment
       run: |
